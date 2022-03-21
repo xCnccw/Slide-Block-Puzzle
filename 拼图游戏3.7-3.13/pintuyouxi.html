@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!-- <html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> -->
+    <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="koudai.png">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/starter-template/">
+
+    <title>口袋帮-九宫格拼图游戏</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/examples/starter-template/starter-template.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+            body {
+            min-height:100vh;
+            /* background: linear-gradient(150deg,#ffffffda,#ffffff); */
+            /*justify-content:center;
+            align-content:center;*/
+            color: #ffffff;
+        }
+        body,ul{
+            margin:0;
+            padding: 0;
+            background: rgb(0, 0, 0);
+        }
+        #ul{
+            background: rgb(255, 208, 0);
+            width: 314px;
+            height: 314px;
+            border: 4px solid #000;
+            border-radius: 4px;
+            /* margin: 200px auto; */
+            position: relative;
+            margin:0 auto
+        }
+        #ul li{
+            width: 100px;
+            height: 100px;
+            background:url(tupian.png);
+            float: left;
+            list-style-type:none;
+            margin: 1px 1px 1px 1px;
+            transition: 0.3s;
+        }
+        #ul li.active{
+            background: rgb(255, 208, 0);
+        }
+        .yuantu{
+            width: 157px;
+            height: 157px;
+        }
+        .col-md-4{
+            margin-top:20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        /* #first{
+            margin-top:20px;
+            margin-bottom: 20px;
+
+        } */
+        .box{
+            width: 314px;
+            height: 250px;
+            border:rgb(255, 208, 0) solid 1px;
+            margin:0 auto
+        }
+
+        
+        
+
+    </style>
+</head>
+<body>
+    <script>
+        window.onload=function(){
+            let p1=new Ping();
+            p1.init("ul",3);
+        }
+        function Ping(){
+            this.OUl=null;
+            this.aLi=null;
+            this.len=0;
+            this.oLi=null;
+            this.num=0;
+            this.zIndex=2;
+            this.arr=[];
+        }
+        Ping .prototype.init=function(id,num){
+            this.oUl=document.querySelector(id);
+            this.oUl.innerHTML=this.sheng(num);
+            this.aLi=this.oUl.querySelectorAll('li');
+            this.len=this.aLi.length;
+            this.oLi=this.aLi[this.len-1];
+            this.num=num;
+
+            this.oLi.className='active';
+            this.ding();
+            this.click();
+        }
+        Ping.prototype.sheng=function(num){
+            let n=num*num;
+            let str="";
+            for(let i=0;i<n;i++){
+                str +="<li></li>";
+            }
+            return str;
+        }
+        
+        Ping.prototype.ding=function(){
+            let arr1=[];
+            for(let i=0;i<this.len;i++){
+                arr1.push([this.aLi[i].offsetLeft,this.aLi[i].offsetTop,i]);
+            }
+            let arr2=[];
+            for(let i=0;i<this.len-1;i++){
+                arr2.push(arr1[i]);
+            }
+            arr2.sort(function(a,b){
+                return Math.random()-0.5;
+            });
+            arr2.push(arr1[this.len-1]);
+            console.log(arr2);
+            arr1=arr2;
+            //
+            let arr3=[];
+            let a=0;
+            for(let i=0;i<this.len;i++){
+                arr3.push(arr2[i][2]);
+            }
+            for(let i=0;i<this.len;i++){
+                let b = arr3[i];
+                for(let j=i;j<this.len;j++){
+                    let c=arr3[j];
+                    if(b>c){
+                        a+=1;
+                    }
+                }
+            }
+            if(a%2==0){
+                console.log('能解');
+            }
+            else{
+                console.log('无解');
+                this.ding();
+            }
+            //判断是否可移动
+            Ping.prototype.pan=function(li){
+                let index=li.index;
+                let num=this.oLi.index;
+                if(num%this.num==0)//左
+                {
+                    console.log('左')
+                    if(index+this.num==num||index-this.num==num||index-1==num)
+                    return true;
+                }
+                 if(num%this.num==this.num-1)//右
+                {
+                    console.log('右')
+                    if(index+this.num==num||index-this.num==num||index+ 1==num)
+                    return true;
+                }
+                else//中
+                {
+                    console.log('中');
+                    if(index+this.num==num||index-this.num==num||index-1==num||index+ 1==num)
+                    return true;
+                }
+                return false;
+            }
+            
+
+            for(let i=0;i<this.len;i++){
+                this.aLi[i].style.position="absolute";
+                this.aLi[i].style.left=arr1[i][0]+"px";
+                this.aLi[i].style.top=arr1[i][1]+"px";
+                this.aLi[i].index=arr1[i][2];
+                this.aLi[i].style.margin=0;
+                this.aLi[i].style.backgroundSize=this.num*100+"px";
+                this.aLi[i].style.backgroundPosition=(i%this.num)*-100+"px "+((i-(i%this.num))/this.num)*-100+"px";
+
+            }
+        }
+        Ping.prototype.Li=function(index){
+            for(let i=0;i<this.len;i++)
+            if(this.aLi[i].index==index){
+                return this.aLi[i];
+            }
+
+        }
+        //移动
+        Ping.prototype.move=function(li){
+            if(this.pan(li))
+            {
+            li.style.left=this.oLi.offsetLeft+"px";
+            li.style.top=this.oLi.offsetTop+"px";
+            this.oLi.style.left=li.offsetLeft+"px";
+            this.oLi.style.top=li.offsetTop+"px";
+            [this.oLi.index,li.index]=[li.index,this.oLi.index];
+            this.he();
+            }
+        }
+        // Ping.prototype.move=function(li){
+        //     if(this.pan(li))
+        //         {
+        //         li.style.left=this.arr[this.oLi.index][0]+"px";
+        //         li.style.top=this.arr[this.oLi.index][1]+"px";
+        //         this.oLi.style.left=this.arr[li.index][0]+"px";
+        //         this.oLi.style.top=this.arr[li.index][1]+"px";
+        //         [this.oLi.index,li.index]=[li.index,this.oLi.index];
+        //         this.he()
+        //         }
+        //     }
+        Ping.prototype.click=function(){
+            let This=this;
+            for(let i=0;i<this.len;i++){
+                this.aLi[i].onclick=function(){
+                    this.style.zIndex=This.zIndex++;
+                    This.move(this);
+                }
+            }
+        }
+        //判断结果
+
+        Ping.prototype.he=function(){
+            let arr1=[];
+            let arr2=[0,1,2,3,4,5,6,7,8];//写死的
+            var btn=document.getElementById('btn')
+            for(let i=0;i<this.len;i++){
+                arr1.push(this.aLi[i].index);
+            }
+            console.log(arr1);
+            console.log(arr2);
+
+            btn.onclick=function(){
+            if(arr1.toString()==arr2.toString())
+            alert('恭喜闯关成功:)');
+            }
+        }
+    </script>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-4" id="first">
+            <div class="box">
+            <h2>参考图</h2><img src="tupian.png"  class="yuantu" /> 
+            </div>
+        </div>
+        <div class="col-md-4">
+            <ul id="ul">
+                <!-- <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li class="active" id="active"></li> -->
+            </ul>
+        </div>
+        <div class="col-md-4">
+        <button class="form-control btn btn-danger" type="submit" id="btn"><span class="	glyphicon glyphicon-ok"></span>确认</button>
+        </div>
+
+      </div>
+    </div>
+
+    
+    <script src="https://fastly.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+</body>
+</html>
